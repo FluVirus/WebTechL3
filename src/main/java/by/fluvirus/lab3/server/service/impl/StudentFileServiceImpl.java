@@ -1,0 +1,45 @@
+package by.fluvirus.lab3.server.service.impl;
+
+import by.fluvirus.lab3.server.dao.DAOFactory;
+import by.fluvirus.lab3.server.dao.StudentFileDAO;
+import by.fluvirus.lab3.server.dao.creator.StudentFileCreator;
+import by.fluvirus.lab3.server.model.StudentFile;
+import by.fluvirus.lab3.server.service.StudentFileService;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+public class StudentFileServiceImpl implements StudentFileService {
+    private final StudentFileCreator creator = StudentFileCreator.getInstance();
+    private final StudentFileDAO studentFileDAO = DAOFactory.getInstance().getStudentFileDAO();
+
+    @Override
+    public StudentFile createFile(Node node) {
+        return creator.create(node);
+    }
+
+    @Override
+    public Element createNode(Document doc, StudentFile file) {
+        return creator.createNode(doc, file);
+    }
+
+    @Override
+    public boolean containsFile(int id) {
+        return studentFileDAO.contains(id);
+    }
+
+    @Override
+    public boolean addFile(String firstName, String lastName) {
+        return studentFileDAO.add(new StudentFile(0, firstName, lastName));
+    }
+
+    @Override
+    public StudentFile[] getAllFiles() {
+        return studentFileDAO.getAll();
+    }
+
+    @Override
+    public boolean updateFile(int id, String firstName, String lastName) {
+        return studentFileDAO.updateById(id, new StudentFile(id, firstName, lastName));
+    }
+}
